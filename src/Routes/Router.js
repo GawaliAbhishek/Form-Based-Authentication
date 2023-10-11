@@ -15,9 +15,11 @@ router.get("/register", (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         const userData = await User.findOne({ email: req.body.email });
-        if (await securePass.CheckPassword(req.body.password, userData.password)){
-            const token=await userData.GenarateToken();
-            
+        console.log(userData);
+        const verified=await securePass.CheckPassword(req.body.password, userData.password);
+        console.log(verified);
+        if (verified){
+            //const token=await userData.GenarateToken();
             res.status(200).render('landing')
         }
         else
@@ -37,11 +39,11 @@ router.post('/register', async (req, res) => {
                 password: req.body.password
             });
 
-            const token = await user.GenarateToken();
-            console.log(token);
+           // const token = await user.GenarateToken();
+            //console.log(token);
 
             const result = await user.save();
-            console.log(result);
+           // console.log(result);
             res.status(201).render('index')
         }
         else {
